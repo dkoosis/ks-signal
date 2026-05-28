@@ -15,4 +15,5 @@ coverage.*
 
 # Claude session scratch
 .claude/tmp/
+.claude/rules/boot.md
 .snipe/
