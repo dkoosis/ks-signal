@@ -1,7 +1,24 @@
 # ks-signal North Star
 
-status: drafting (brainstorm 2026-05-28)
+status: **PARKED 2026-05-28** — see Pivot below
 related: it2ks (`~/Projects/it2ks`), trixi placement proposal `~/Projects/trixi/docs/proposals/2026-05-28-keystroke-analytics-placement.md`
+
+## Pivot (2026-05-28, end of brainstorm)
+
+dk: *"I'm thinking I may have taken a wrong turn by focusing on keystroke dynamics."* — and the
+session's own findings agree. For the **primary goal (retrieval)**, keystroke timing is the worst
+ratio of any signal: most calibration, most noise, lowest coverage (typed-into-terminal only;
+dictation invisible per F1), and a weaker affect proxy than HRV or dk's own words. The highest-value
+discovery (F2, transcript correlation) needs **no** keystroke analytics.
+
+**Decision: keystroke-dynamics-first was the wrong ordering. Layer-1 work moves to the trixi side**
+— compose the situational fingerprint from signals already on disk (transcript task+sentiment, time,
+app/focus, calendar, location, HRV-when-worn). **ks-signal is demoted to a later, optional
+enrichment**, to be justified only if/when the cheap-signal fingerprint proves a gap that keystrokes'
+unique *affect-matched, content-blind* dimension actually fills.
+
+Not wasted: the spec is shelf-ready, and **F1/F2 are a gift to trixi** (how to detect dictation for
+free). Everything below is preserved as the record of that design, not active direction.
 
 ## What ks-signal is
 
