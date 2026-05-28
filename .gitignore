@@ -1,0 +1,18 @@
+# Go
+/bin/
+*.test
+*.out
+coverage.*
+
+# Local state / data (never commit captured keystroke data)
+/.ks-signal/
+*.jsonl
+
+# Editor / OS
+.DS_Store
+.idea/
+*.swp
+
+# Claude session scratch
+.claude/tmp/
+.snipe/
