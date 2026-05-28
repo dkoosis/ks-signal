@@ -16,10 +16,39 @@ it2ks (capture) → ks-signal (analytics) → trixi (runtime)
 
 ## Goals (ranked)
 
-1. **Primary — richer retrieval.** Attach situational state to each memory so retrieval can
-   match on *"what state was I in when I wrote this,"* not semantic similarity alone.
-   Keystrokes are one input to that broader emotional/operational/situational context.
+1. **Primary — richer retrieval (FOCUS).** Attach situational state to each memory so retrieval
+   can match on *"what state was I in when I wrote this,"* not semantic similarity alone.
 2. **Secondary — coaching.** Surface patterns over time (fatigue, stress, focus drift).
+
+### Why the psychomotor layer earns its place (retrieval justification)
+
+Operational context (app, project, time) is the obvious retrieval index — and trixi mostly has
+it already. The keystroke layer's *unique* contribution is **affect-matched retrieval**:
+"surface what I was doing *last time I was in this state*" (scattered / fatigued / wired),
+**regardless of topic**. Semantics can't do it; operational tags only crudely approximate it.
+That how-was-I dimension is the whole reason ks-signal exists; everything is justified against it.
+
+### Calibration method — opportunistic labels (firm)
+
+The lab validates cheap always-on keystroke features against **rare, high-quality ground-truth
+labels** captured opportunistically:
+- **Transcripts** (Claude logs) → task + sentiment labels.
+- **HRV** (Polar, worn *sometimes*) → arousal labels. Not a runtime signal — too intermittent —
+  but during overlap windows it is ground truth for "which keystroke features track arousal," so
+  keystroke-only can proxy arousal when the Polar is off.
+
+Method: extract candidate features → align with labels during overlap windows → keep features
+that predict, drop the rest → survivors become the baseline + featurespec. This is what
+"lab-first" concretely means.
+
+### Signal landscape (context; mostly NOT ks-signal's job)
+
+The full situational fingerprint is multi-signal and **composed by trixi** (integration is
+trixi's job, confirmed). trixi already captures location/weather/calendar/email/mood-via-language;
+much else is derivable from existing logs. New sensors are added one at a time only when the lab
+proves a gap. Candidate next sensor (parked): **app/window focus switching** ("focus2ks") —
+cheap, privacy-clean, strong focus-vs-scatter proxy. Voice: parked (see below). Mood: trixi
+infers from language; no sensor.
 
 ## Scope boundary (firm)
 
