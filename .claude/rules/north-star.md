@@ -85,10 +85,49 @@ ks-signal persists only **baselines + current state**. Per-nug snapshots accumul
 distributed history that serves retrieval; coaching recomputes longitudinal views from raw
 logs on demand (logs are the durable time series). → **No separate time-series store, yet.**
 
+## Findings
+
+- **F1 (2026-05-28): dictation is invisible to the keystroke stream.** Measured today's
+  it2ks log while dk dictated extensively via Wispr: <0.4% of key-down gaps are
+  sub-physiological; 83% are 50–500ms human-typing range. Wispr inserts via
+  paste/accessibility, not synthetic keystrokes, so iTerm2 emits no notifications for it.
+  → dictation cannot pollute the typing baseline (good), and cannot be captured *or* inferred
+  from keystrokes alone (it looks identical to idle). Capturing modality is a **capture-layer**
+  gap, not a ks-signal one.
+
+- **F2 (2026-05-28): dictation IS recoverable by transcript correlation — spike succeeded.**
+  The dictated text it2ks misses still reaches Claude and sits in
+  `~/.claude/projects/.../*.jsonl` with timestamps. Correlating user-message timestamps with
+  it2ks key-down presence cleanly separates modality: dictated messages show **0.01–0.05
+  keydowns/char**, typed show **0.5–1.3** — an order-of-magnitude gap, single-threshold
+  separable. No mic, no accessibility, no new capture. Caveats: coverage is **Claude-context
+  only** (dictation into other apps still invisible); couples to Claude's undocumented log
+  format (**lab-only**, never the runtime contract).
+
+## Direction: voice channel — PARKED
+
+Detecting dictation was briefly framed as a router for a **voice** sensor (Layer 1b). The F2
+correlation makes voice unnecessary for the near term: the transcript yields both the modality
+tag *and* the richer operational/situational context (the conversation = what dk was doing),
+which is closer to the primary goal than voice prosody and already exists on disk. Voice is
+parked, possibly permanently. If ever revived: extract prosodic features locally, NEVER store
+or transmit audio.
+
+## Transcript correlation — placement (firm)
+
+- **Runtime = trixi's job.** Composing keystroke-state with "what was I doing" is signal
+  *integration* → trixi owns it. The Claude transcript is a context source trixi reads, like
+  weather/location. ks-signal does NOT read Claude logs at runtime (would collapse the tier
+  boundary + couple to an unstable format).
+- **Lab = ks-signal, offline.** ks-signal MAY use transcripts as *labels* to discover which
+  keystroke features track states and to calibrate baselines. Findings work only — never the
+  snapshot, never the featurespec.
+
 ## Open
 
-- **Process model** — continuous daemon vs on-demand recompute vs lab-first. Undecided;
-  resolve after fundamentals, before file/daemon layout.
+- **Process model** — continuous daemon vs on-demand recompute vs **lab-first**. Lean:
+  lab-first, because the runtime normalizer depends on features the lab must first discover
+  (using transcript labels per F2). Resolve next, before file/daemon layout.
 
 ## Input contract (from it2ks)
 
